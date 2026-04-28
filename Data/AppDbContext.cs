@@ -8,6 +8,6 @@ namespace MobileApi.Data
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
 
-        public DbSet<Post> Posts => Set<Post>();
+        public DbSet<LostItemReport> LostItemReports => Set<LostItemReport>();
     }
 }

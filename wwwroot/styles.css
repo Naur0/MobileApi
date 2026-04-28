@@ -54,6 +54,13 @@ body::before {
     border-radius: 28px;
 }
 
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
 .hero {
     padding: 3rem;
     overflow: hidden;
@@ -105,12 +112,26 @@ h2 {
     margin: 1.25rem 0 0;
 }
 
-.search-panel {
-    margin-top: 2rem;
+.report-panel {
+    margin-top: 0.25rem;
     padding: 1.25rem;
     border-radius: 22px;
     background: rgba(255, 250, 242, 0.92);
     border: 1px solid var(--line);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.form-grid label {
+    display: block;
+}
+
+.full-width {
+    grid-column: 1 / -1;
 }
 
 .field-label {
@@ -126,13 +147,17 @@ h2 {
 }
 
 input,
+select,
+textarea,
 button {
     border: 0;
     border-radius: 16px;
     font: inherit;
 }
 
-input {
+input,
+select,
+textarea {
     width: 100%;
     padding: 1rem 1.1rem;
     background: #fff;
@@ -140,7 +165,14 @@ input {
     border: 1px solid rgba(31, 42, 31, 0.08);
 }
 
-input:focus {
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
     outline: 2px solid rgba(217, 108, 63, 0.28);
     outline-offset: 2px;
 }
@@ -164,6 +196,15 @@ button:hover {
     padding: 1.5rem;
 }
 
+.actions-row {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 .results-head {
     display: flex;
     justify-content: space-between;
@@ -172,7 +213,9 @@ button:hover {
 }
 
 .status-pill {
+    display: inline-flex;
     align-self: start;
+    margin-top: 1.75rem;
     padding: 0.65rem 0.9rem;
     border-radius: 999px;
     background: var(--accent-soft);
@@ -192,7 +235,7 @@ button:hover {
 .results-grid {
     margin-top: 1.25rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1rem;
 }
 
@@ -203,6 +246,13 @@ button:hover {
     border: 1px solid rgba(31, 42, 31, 0.08);
     box-shadow: 0 16px 36px rgba(78, 57, 31, 0.08);
     animation: rise 420ms ease both;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: start;
 }
 
 .result-card h3 {
@@ -233,6 +283,35 @@ button:hover {
     font-weight: 700;
 }
 
+.status-tag {
+    padding: 0.38rem 0.72rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-open {
+    background: rgba(217, 108, 63, 0.16);
+    color: #9a431d;
+}
+
+.status-in-review {
+    background: rgba(209, 167, 41, 0.18);
+    color: #7b5c00;
+}
+
+.status-found {
+    background: rgba(81, 133, 115, 0.16);
+    color: #2c5a49;
+}
+
+.contact-line {
+    margin-top: 0.95rem;
+    font-size: 0.92rem;
+    color: var(--ink);
+}
+
 .empty-state {
     padding: 2rem;
     text-align: center;
@@ -240,6 +319,32 @@ button:hover {
     border: 1px dashed rgba(31, 42, 31, 0.18);
     color: var(--muted);
     background: rgba(255, 255, 255, 0.66);
+}
+
+.compact {
+    padding: 1rem;
+}
+
+.location-results {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.location-option {
+    width: 100%;
+    text-align: left;
+    padding: 0.95rem 1rem;
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid rgba(31, 42, 31, 0.08);
+    box-shadow: none;
+}
+
+.location-option span {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--muted);
+    font-size: 0.88rem;
 }
 
 @keyframes rise {
@@ -265,10 +370,13 @@ button:hover {
         border-radius: 22px;
     }
 
-    .hero {
+    .hero,
+    .results-panel {
         padding: 1.5rem;
     }
 
+    .hero-grid,
+    .form-grid,
     .search-row {
         grid-template-columns: 1fr;
     }

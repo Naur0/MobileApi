@@ -15,7 +15,7 @@ builder.Services.AddHttpClient("Nominatim", client =>
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("PostDb"));
+    options.UseSqlite("Data Source=mobileapi.db"));
 
 builder.Services.AddCors(options =>
 {
@@ -30,12 +30,33 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
 
-    if (!db.Posts.Any())
+    if (!db.LostItemReports.Any())
     {
-        db.Posts.AddRange(
-            new Post { Title = "Welcome", Content = "Sample post data is available." },
-            new Post { Title = "Render-ready", Content = "This API is working on Render." }
+        db.LostItemReports.AddRange(
+            new LostItemReport
+            {
+                ItemName = "Black Backpack",
+                Description = "Laptop bag with a silver zipper and school notes inside.",
+                Category = "Bag",
+                LostDate = DateTime.UtcNow.Date.AddDays(-1),
+                LastSeenLocation = "Dhoby Ghaut MRT Station",
+                ContactName = "Avery",
+                ContactMethod = "avery@example.com",
+                Status = "Open"
+            },
+            new LostItemReport
+            {
+                ItemName = "Blue Wallet",
+                Description = "Folded wallet with ID cards and a transit pass.",
+                Category = "Wallet",
+                LostDate = DateTime.UtcNow.Date.AddDays(-2),
+                LastSeenLocation = "Bugis Junction",
+                ContactName = "Jordan",
+                ContactMethod = "+65 8123 4567",
+                Status = "In Review"
+            }
         );
 
         db.SaveChanges();

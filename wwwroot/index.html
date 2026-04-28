@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lost Item Search</title>
+    <title>Lost & Found Desk</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
@@ -11,35 +11,78 @@
 </head>
 <body>
     <main class="shell">
-        <section class="hero">
-            <p class="eyebrow">OpenStreetMap Search</p>
-            <h1>Find places tied to a lost item, fast.</h1>
-            <p class="lede">
-                This demo searches Nominatim through your ASP.NET API, then turns the results
-                into a clean shortlist with coordinates and place types.
-            </p>
+        <section class="hero hero-grid">
+            <div class="hero-copy">
+                <p class="eyebrow">Community Lost And Found</p>
+                <h1>Report what was lost and track what still needs help.</h1>
+                <p class="lede">
+                    This app now stores real lost-item reports, shows active cases, and uses the
+                    location search API to fill in believable last-seen places.
+                </p>
+                <div id="status" class="status-pill">Loading</div>
+            </div>
 
-            <form id="search-form" class="search-panel">
-                <label class="field-label" for="query">Search term</label>
-                <div class="search-row">
-                    <input id="query" name="query" type="text" value="lost item" placeholder="Try: lost item, bag, phone, station" />
-                    <button type="submit">Search</button>
+            <form id="report-form" class="report-panel">
+                <div class="form-grid">
+                    <label>
+                        <span class="field-label">Item name</span>
+                        <input id="itemName" name="itemName" type="text" maxlength="80" placeholder="Black backpack" required />
+                    </label>
+                    <label>
+                        <span class="field-label">Category</span>
+                        <input id="category" name="category" type="text" maxlength="40" placeholder="Bag, Phone, Wallet" required />
+                    </label>
+                    <label>
+                        <span class="field-label">Date lost</span>
+                        <input id="lostDate" name="lostDate" type="date" required />
+                    </label>
+                    <label>
+                        <span class="field-label">Status</span>
+                        <select id="statusValue" name="status">
+                            <option>Open</option>
+                            <option>In Review</option>
+                            <option>Found</option>
+                        </select>
+                    </label>
+                    <label class="full-width">
+                        <span class="field-label">Description</span>
+                        <textarea id="description" name="description" rows="4" maxlength="600" placeholder="What does it look like? What was inside?" required></textarea>
+                    </label>
+                    <label class="full-width">
+                        <span class="field-label">Last seen location</span>
+                        <div class="search-row">
+                            <input id="locationQuery" name="locationQuery" type="text" maxlength="160" placeholder="Dhoby Ghaut MRT, library, airport terminal..." required />
+                            <button type="button" id="search-location">Find place</button>
+                        </div>
+                    </label>
+                    <div id="location-results" class="location-results full-width"></div>
+                    <label>
+                        <span class="field-label">Contact name</span>
+                        <input id="contactName" name="contactName" type="text" maxlength="60" placeholder="Your name" required />
+                    </label>
+                    <label>
+                        <span class="field-label">Contact method</span>
+                        <input id="contactMethod" name="contactMethod" type="text" maxlength="80" placeholder="Phone or email" required />
+                    </label>
                 </div>
-                <p class="hint">Example source: Nominatim OpenStreetMap search API</p>
+
+                <div class="actions-row">
+                    <button type="submit">Create report</button>
+                    <p class="hint">Saved locally in SQLite through your ASP.NET API.</p>
+                </div>
             </form>
         </section>
 
         <section class="results-panel">
             <div class="results-head">
                 <div>
-                    <p class="section-kicker">Results</p>
-                    <h2>Places that match your search</h2>
+                    <p class="section-kicker">Live Cases</p>
+                    <h2>Recent lost-item reports</h2>
                 </div>
-                <div id="status" class="status-pill">Ready</div>
             </div>
 
             <div id="summary" class="summary-card">
-                Loading the default search...
+                Loading reports...
             </div>
 
             <div id="results" class="results-grid"></div>
