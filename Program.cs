@@ -25,4 +25,6 @@ app.UseCors();
 
 app.MapControllers();
 
-app.Run();
+// ✅ PORT CONFIG (IMPORTANT for deployment like Render / Railway / etc.)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Run($"http://0.0.0.0:{port}");
