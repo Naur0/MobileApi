@@ -42,5 +42,5 @@ app.MapControllers();
 app.MapGet("/", () => Results.Ok(new { status = "running", message = "MobileApi is ready." }));
 
 // ✅ PORT CONFIG (IMPORTANT for deployment like Render / Railway / etc.)
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-app.Run($"http://0.0.0.0:{port}");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Add($"http://*:{port}");
