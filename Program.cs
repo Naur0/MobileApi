@@ -1,18 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using MobileApi.Data;
 using MobileApi.Models;
-using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Controllers
+// ✅ IMPORTANT: Render PORT binding (must be BEFORE Build)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+
+// -------------------- SERVICES --------------------
+
+// Controllers
 builder.Services.AddControllers();
 
-// ✅ InMemory DB
+// InMemory DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("PostDb"));
 
-// ✅ CORS (IMPORTANT for MAUI)
+// CORS (for MAUI / frontend access)
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -21,26 +26,42 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader());
 });
 
+// -------------------- APP BUILD --------------------
+
 var app = builder.Build();
 
-// ✅ Seed sample data for initial GET responses
+// -------------------- SEED DATA --------------------
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
     if (!db.Posts.Any())
     {
         db.Posts.AddRange(
             new Post { Title = "Welcome", Content = "Sample post data is available." },
-            new Post { Title = "Render-ready", Content = "This .NET API is configured for Render." });
+            new Post { Title = "Render-ready", Content = "This API is working on Render." }
+        );
+
         db.SaveChanges();
     }
 }
 
+// -------------------- MIDDLEWARE --------------------
+
 app.UseCors();
 
 app.MapControllers();
-app.MapGet("/", () => Results.Ok(new { status = "running", message = "MobileApi is ready." }));
 
-// ✅ PORT CONFIG (IMPORTANT for deployment like Render / Railway / etc.)
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Urls.Add($"http://*:{port}");
+// Test route (for browser check)
+app.MapGet("/", () =>
+    Results.Ok(new
+    {
+        status = "running",
+        message = "MobileApi is live 🚀"
+    })
+);
+
+// -------------------- RUN APP --------------------
+
+app.Run();
