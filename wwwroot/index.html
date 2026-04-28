@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lost Item Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <p class="eyebrow">OpenStreetMap Search</p>
+            <h1>Find places tied to a lost item, fast.</h1>
+            <p class="lede">
+                This demo searches Nominatim through your ASP.NET API, then turns the results
+                into a clean shortlist with coordinates and place types.
+            </p>
+
+            <form id="search-form" class="search-panel">
+                <label class="field-label" for="query">Search term</label>
+                <div class="search-row">
+                    <input id="query" name="query" type="text" value="lost item" placeholder="Try: lost item, bag, phone, station" />
+                    <button type="submit">Search</button>
+                </div>
+                <p class="hint">Example source: Nominatim OpenStreetMap search API</p>
+            </form>
+        </section>
+
+        <section class="results-panel">
+            <div class="results-head">
+                <div>
+                    <p class="section-kicker">Results</p>
+                    <h2>Places that match your search</h2>
+                </div>
+                <div id="status" class="status-pill">Ready</div>
+            </div>
+
+            <div id="summary" class="summary-card">
+                Loading the default search...
+            </div>
+
+            <div id="results" class="results-grid"></div>
+        </section>
+    </main>
+
+    <script src="/app.js"></script>
+</body>
+</html>

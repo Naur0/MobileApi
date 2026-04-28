@@ -4,20 +4,19 @@ using MobileApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ IMPORTANT: Render PORT binding (must be BEFORE Build)
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 builder.WebHost.UseUrls($"http://*:{port}");
 
-// -------------------- SERVICES --------------------
-
-// Controllers
 builder.Services.AddControllers();
+builder.Services.AddHttpClient("Nominatim", client =>
+{
+    client.BaseAddress = new Uri("https://nominatim.openstreetmap.org/");
+    client.DefaultRequestHeaders.UserAgent.ParseAdd("MobileApi/1.0");
+});
 
-// InMemory DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("PostDb"));
 
-// CORS (for MAUI / frontend access)
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -26,11 +25,7 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader());
 });
 
-// -------------------- APP BUILD --------------------
-
 var app = builder.Build();
-
-// -------------------- SEED DATA --------------------
 
 using (var scope = app.Services.CreateScope())
 {
@@ -47,21 +42,10 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// -------------------- MIDDLEWARE --------------------
-
 app.UseCors();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.MapControllers();
-
-// Test route (for browser check)
-app.MapGet("/", () =>
-    Results.Ok(new
-    {
-        status = "running",
-        message = "MobileApi is live 🚀"
-    })
-);
-
-// -------------------- RUN APP --------------------
 
 app.Run();
